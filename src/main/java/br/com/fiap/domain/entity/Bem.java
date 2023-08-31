@@ -1,22 +1,36 @@
 package br.com.fiap.domain.entity;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "TB_BEM", uniqueConstraints = {
+    @UniqueConstraint(name = "UK_BEM_ETIQUETA", columnNames = {"ETIQUETA"})
+})
 public class Bem {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_BEM")
+    @SequenceGenerator(name = "SQ_BEM", sequenceName = "SQ_BEM")
+    @Column(name = "ID")
     private Long id;
 
+    @Column(name = "NOME", nullable = false)
     private String nome;
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "TIPO_DE_BEM_ID", referencedColumnName = "ID", foreignKey = @ForeignKey(name = "FK_BEM_TIPO_DE_BEM"))
     private TipoDeBem tipo;
 
+    @Column(name = "ETIQUETA", nullable = false)
     private String etiqueta;
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "DEPARTAMENTO_ID", referencedColumnName = "ID", foreignKey = @ForeignKey(name = "FK_BEM_DEPARTAMENTO"))
     private Departamento localizacao;
 
+    @Column(name = "AQUISICAO")
     private LocalDate aquisicao;
-
 
     public Bem() {
     }
@@ -87,12 +101,12 @@ public class Bem {
     @Override
     public String toString() {
         return "Bem{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", tipo=" + tipo +
-                ", etiqueta='" + etiqueta + '\'' +
-                ", localizacao=" + localizacao +
-                ", aquisicao=" + aquisicao +
-                '}';
+            "id=" + id +
+            ", nome='" + nome + '\'' +
+            ", tipo=" + tipo +
+            ", etiqueta='" + etiqueta + '\'' +
+            ", localizacao=" + localizacao +
+            ", aquisicao=" + aquisicao +
+            '}';
     }
 }

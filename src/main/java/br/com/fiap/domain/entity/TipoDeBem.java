@@ -1,9 +1,19 @@
 package br.com.fiap.domain.entity;
 
-public class TipoDeBem {
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "TB_TIPO_DE_BEM", uniqueConstraints = {
+    @UniqueConstraint(name = "UK_TIPO_DE_BEM_NOME", columnNames = {"NOME"})
+})
+public class TipoDeBem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_TIPO_DE_BEM")
+    @SequenceGenerator(name = "SQ_TIPO_DE_BEM", sequenceName = "SQ_TIPO_DE_BEM")
+    @Column(name = "ID")
     private Long id;
 
+    @Column(name = "NOME", nullable = false)
     private String nome;
 
     public TipoDeBem() {
@@ -35,8 +45,8 @@ public class TipoDeBem {
     @Override
     public String toString() {
         return "TipoDeBem{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                '}';
+            "id=" + id +
+            ", nome='" + nome + '\'' +
+            '}';
     }
 }
